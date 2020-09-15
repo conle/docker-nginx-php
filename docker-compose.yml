@@ -1,0 +1,15 @@
+nginx:
+  image: conle/nginx-php:v1
+  ports:
+  - "80:80"
+  links:
+  - "php"
+  volumes:
+  - ../../www:/www
+  - ./sites-enabled:/etc/nginx/conf.d
+php:
+  image: conle/php7.1fpm:v1
+  ports:
+  - "8000:8000"
+  volumes:
+  - ../../www:/www
