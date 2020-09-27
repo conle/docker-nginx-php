@@ -1,15 +1,31 @@
-nginx:
-  image: conle/nginx-php:v1
-  ports:
-  - "80:80"
-  links:
-  - "php"
-  volumes:
-  - ../../www:/www
-  - ./sites-enabled:/etc/nginx/conf.d
-php:
-  image: conle/php7.1fpm:v1
-  ports:
-  - "8000:8000"
-  volumes:
-  - ../../www:/www
+version: "3"
+services:
+  nginx:
+    image: "conle/nginx:v3"
+    container_name: "nginx_v3"
+    ports:
+    - "80:80"
+    links:
+    - "php"
+    volumes:
+    - ../www:/www # 本地项目路径：容器路徑
+    - ./nginx/sites-enabled:/etc/nginx/conf.d #多域名配置文件
+  php:
+    image: "conle/php7.1fpm:v3"
+    container_name: "php7.1fpm"
+    ports:
+    - "8000:8000"
+    volumes:
+    - ../www:/www # 本地项目路径：容器路徑
+  mysql_compose:
+    image: mysql:5.7
+    container_name: mysql-5.7
+    ports:
+      - 33060:3306
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "654321"
+      MYSQL_USER: "conle"
+      MYSQL_PASSWORD: "conle"
+      MYSQL_DATABASE: "test"
